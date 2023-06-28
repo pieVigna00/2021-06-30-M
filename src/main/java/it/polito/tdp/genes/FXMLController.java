@@ -38,14 +38,36 @@ public class FXMLController {
 
     @FXML
     void doContaArchi(ActionEvent event) {
-
-    }
+    	String soglia=txtSoglia.getText();
+    	int sogliaNum=0;
+    	try {
+    		sogliaNum= Integer.parseInt(soglia);
+    	}
+    	catch (NumberFormatException e) {
+    		txtResult.appendText("Devi inserire un numero ");
+    		return;
+    	}
+    	if(sogliaNum<this.model.getMinimoPeso() || sogliaNum>model.getMassimoPeso()) {
+    		txtResult.appendText("Devi inserire una soglia compresa tra il valore minimo e il valore massimo");
+    		return;
+    	}
+    	txtResult.appendText("Il numero di archi con peso maggiore è: " +model.getNumeroArchiMaggiori(sogliaNum)+"\n");
+    	txtResult.appendText("Il numero di archi con peso minore è: " +model.getNumeroArchiMinori(sogliaNum)+"\n");
+    	}
 
     @FXML
     void doRicerca(ActionEvent event) {
 
     }
-
+    public void buildGraph() {
+    	this.model.buildGraph();
+		txtResult.setText("Grafo creato correttamente : "+this.model.getNumeroVertici()+" vertici e "
+				+this.model.getNumeroArchi()+" archi");
+    }
+    public void setModel(Model model) {
+		this.model = model ;
+		this.buildGraph();
+	}
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert btnContaArchi != null : "fx:id=\"btnContaArchi\" was not injected: check your FXML file 'Scene.fxml'.";
@@ -55,8 +77,5 @@ public class FXMLController {
 
     }
 
-	public void setModel(Model model) {
-		this.model = model ;
-		
-	}
+	
 }
